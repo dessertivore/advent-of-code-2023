@@ -1,7 +1,9 @@
-input: list[str] = open("day-3/input.txt", "r").readlines()
-input1 = [line.strip("\n") for line in input]
+from parse_input import parse_input_func
+
+input1 = parse_input_func("day-3/input.txt")
 
 
+# Function below not actually needed.
 def populate_table(array: list[str]):
     """
     Create a table where each row x corresponds to 1 line in the input file.
@@ -13,7 +15,7 @@ def populate_table(array: list[str]):
     return input_table
 
 
-input_table = populate_table(input1)
+input_table = input1
 
 
 def check_diag(y, last_y, x, array) -> bool:
@@ -83,13 +85,11 @@ def check_ratio(x: int, y: int, array: list) -> int:
                     last_y += 1
                 for z in range(first_y, last_y + 1):
                     num += array[dx][z]
-                print(num)
                 num_list.append(num)
                 dy = last_y
             dy += 1
         dx += 1
     if len(num_list) == 2:
-        print(num_list)
         int1 = num_list[0]
         int2 = num_list[1]
         ratio = int(int1) * int(int2)
