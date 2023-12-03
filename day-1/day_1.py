@@ -6,9 +6,6 @@ def replace_text_number(array: str) -> str:
     """
     convert all written numbers into digits.
     keep first and last letters in place in case they are needed for another written number.
-    some numbers do not need first and last letters preserved as they are not the first or
-    last letters of any other numbers (e.g. four - no other number ends in f, so no need
-    to preserve this)
     """
 
     array = array.replace("one", "o1e")
