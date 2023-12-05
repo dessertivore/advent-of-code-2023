@@ -1,3 +1,5 @@
+# to run code and access parent directory for parse function: PYTHONPATH=. poetry run python day-4/day_4.py
+
 from parse_input import parse_input_func
 
 input1 = parse_input_func("day-4/input4.txt")
@@ -33,6 +35,9 @@ print(day4(input, 10))
 
 
 def day4_p2(array: list, winning: int) -> int:
+    """
+    Based on previous code, but with new functionality as needed for part 2.
+    """
     scratchcards_owned: dict = {}
     for index in range(len(array)):
         scratchcards_owned[index] = 1
@@ -44,7 +49,7 @@ def day4_p2(array: list, winning: int) -> int:
         for x in winning_list:
             for y in my_list:
                 if x == y:
-                    counter += 1
+                    counter += 1  # count how many matches
         for i in range(idx + 1, min(idx + counter + 1, len(array))):
             scratchcards_owned[i] += scratchcards_owned[idx]
     return sum(scratchcards_owned.values())
