@@ -15,7 +15,6 @@ def parse_input_as_dict(input_file_name: str) -> dict:
             updated = updated.strip(": ")
             new_dict[updated] = []
             current = updated
-        # updated_line = line.strip("\n").strip().split(" ")
         elif re.search("[0-9]", line):
             make_list = re.split(" ", updated)
             make_list = [eval(i) for i in make_list]
@@ -28,24 +27,17 @@ def parse_input_as_dict(input_file_name: str) -> dict:
 input = parse_input_as_dict("day-5/input.txt")
 
 
-def day5_pt1(array: dict) -> int:
+def day5_pt1(input_dict: dict) -> int:
     seed_dict: dict = {}
-    for x in array["seeds"]:
+    for x in input_dict["seeds"]:
         seed_dict[x] = [0] * 8
-    array.pop("seeds")
+    input_dict.pop("seeds")
     for x in seed_dict:
         seed_dict[x][0] = x
         map_no = 1
-        for entry in array.values():
+        for entry in input_dict.values():
             map_counter = 0
             while map_counter in range(0, len(entry)):
-                # source_range = [
-                #     p
-                #     for p in range(
-                #         entry[map_counter + 1],
-                #         (entry[map_counter + 1] + entry[map_counter + 2] + 1),
-                #     )
-                # ]
                 if seed_dict[x][map_no - 1] in range(
                     entry[map_counter + 1],
                     (entry[map_counter + 1] + entry[map_counter + 2] + 1),
