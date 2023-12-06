@@ -56,4 +56,44 @@ def day5_pt1(input_dict: dict) -> int:
     return min
 
 
-print(day5_pt1(input))
+# print(day5_pt1(input))
+
+
+def day5_pt2(input_dict: dict) -> int:
+    """
+    This does not work as not efficienct enough with large numbers - to fix at later date!
+    """
+    seed_dict: dict = {}
+    idx = 0
+    while idx < len(input_dict["seeds"]):
+        for idx in range(
+            input_dict["seeds"][idx],
+            input_dict["seeds"][idx] + input_dict["seeds"][idx + 1],
+        ):
+            seed_dict[idx] = [0] * 8
+    input_dict.pop("seeds")
+    for x in seed_dict:
+        seed_dict[x][0] = x
+        map_no = 1
+        for entry in input_dict.values():
+            map_counter = 0
+            while map_counter in range(0, len(entry)):
+                if seed_dict[x][map_no - 1] in range(
+                    entry[map_counter + 1],
+                    (entry[map_counter + 1] + entry[map_counter + 2] + 1),
+                ):
+                    difference = seed_dict[x][map_no - 1] - entry[map_counter + 1]
+                    seed_dict[x][map_no] = entry[map_counter] + difference
+                    break
+                else:
+                    seed_dict[x][map_no] = seed_dict[x][map_no - 1]
+                map_counter += 3
+            map_no += 1
+    min: int = math.inf
+    for z in seed_dict.values():
+        if z[-1] < min:
+            min = z[-1]
+    return min
+
+
+print(day5_pt2(input))
