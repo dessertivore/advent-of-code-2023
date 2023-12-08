@@ -45,31 +45,6 @@ def day_8_part_1(directions: str, nodes: dict) -> int:
 # print(day_8_part_1(day_8_input_directions, day_8_input_nodes))
 
 
-# def day_8_part_2(directions: str, nodes: dict, A_list: dict) -> int:
-#     """
-#     Start with locations xxA. Using directions string, make your way to location xxZ.
-#     Left direction is stored at entry 0, right direction is stored at 1.
-#     """
-#     counter = 0
-#     all_Z = False
-#     while not all_Z:
-#         for x in directions:
-#             counter += 1
-#             for starter in A_list:
-#                 current: str = A_list[starter][0]
-#                 if x == "R":
-#                     A_list[starter][0] = nodes[current][1]
-#                 if x == "L":
-#                     A_list[starter][0] = nodes[current][0]
-#                 A_list[starter][1] = A_list[starter][0][2]
-#         if all(last_letter[0][2] == "Z" for last_letter in A_list.values()):
-#             """
-#             Check if all nodes end in Z
-#             """
-#             all_Z = True
-#     return counter
-
-
 def day_8_part_2(directions: str, nodes: dict, A_list: dict) -> int:
     """
     Start with locations xxA. Using directions string, make your way to location xxZ.
@@ -77,6 +52,9 @@ def day_8_part_2(directions: str, nodes: dict, A_list: dict) -> int:
     """
     counter_list: list = []
     for x in A_list:
+        """
+        Find how many steps each separate starting point ends up with.
+        """
         counter = 0
         current = x
         while current[2] != "Z":
@@ -87,14 +65,7 @@ def day_8_part_2(directions: str, nodes: dict, A_list: dict) -> int:
                 if x == "L":
                     current = nodes[current][0]
         counter_list.append(counter)
-    return math.lcm(
-        counter_list[0],
-        counter_list[1],
-        counter_list[2],
-        counter_list[3],
-        counter_list[4],
-        counter_list[5],
-    )  # A-list is 6 numbers long today, hence using list from 0:5
+    return math.lcm(*counter_list)  # find lowest common multiple of all counters
 
 
 print(day_8_part_2(day_8_input_directions, day_8_input_nodes, day_8_A_List))
