@@ -20,7 +20,7 @@ class Graph:
         self.data[n1].add(n2)
 
 
-def day_10_parse_nodes(file_name: str) -> tuple[Graph, int]:
+def day_10_parse_nodes(file_name: str) -> tuple[Graph, tuple, list]:
     """
     Convert each pipe to location coordinates (x,y) and connect it to other pipes.
     """
@@ -36,12 +36,15 @@ def day_10_parse_nodes(file_name: str) -> tuple[Graph, int]:
     input_as_list: list[str] = open(file_name, "r").readlines()
     y_coord = -1  # will start at coordinates 0,0 once +1 at start
     pipe_map = None
+    full_map = []
     for line in input_as_list:
+        line = line.strip("\n")
         y_coord += 1
         x_coord = -1  # re initialise x at every line
         for char in line:
             x_coord += 1
             coord: tuple = (x_coord, y_coord)
+            full_map.append((coord, char))
             if char == "S":
                 root = coord
             if char in converter_dict:
@@ -67,7 +70,7 @@ def day_10_parse_nodes(file_name: str) -> tuple[Graph, int]:
             root_edges.append(node)
     for root_edge in root_edges:
         pipe_map.add_edge((root, root_edge))
-    return pipe_map, root
+    return pipe_map, root, full_map
 
 
 def day_10_p_1(graph_input: Graph, root):
@@ -105,8 +108,41 @@ def day_10_p_1(graph_input: Graph, root):
                 # add this node to the queue to examine its connected nodes too
                 queue.append(node)
     max_distance = max(distance.values())
-    return max_distance
+    return max_distance, discovery_order
 
 
-input1, input2 = day_10_parse_nodes("day-10/input.txt")
-print(day_10_p_1(input1, input2))
+input1, input2, full_map = day_10_parse_nodes("day-10/input.txt")
+max, disc_order = day_10_p_1(input1, input2)
+
+
+def find_area(input_list, full_map):
+    """
+    THIS DOES NOT WORK YET FOR INPUT DATA- NEEDS WORK
+    """
+    in_poly = []
+    for entry in full_map:
+        coord, char = entry
+        if char == ".":
+            how_many_to_the_right = 0
+            how_many_to_the_left = 0
+            for x in input_list:
+                if (
+                    x[0] == coord[0] and x[1] > coord[1]
+                ):  # check how many pipes to the right
+                    how_many_to_the_right += 1
+                if (
+                    x[0] == coord[0] and x[1] < coord[1]
+                ):  # check how many pipes to the left
+                    how_many_to_the_left += 1
+
+            if (
+                how_many_to_the_right % 2 != 0
+                and how_many_to_the_left % 2 == 0
+                and how_many_to_the_left > 0
+            ):  # ensure >1 pipe to the left, odd number of pipes to the left and even number to the right
+                # in this scenario, the ground at that coord is enclosed
+                in_poly.append(coord)
+    return len(in_poly)
+
+
+print(find_area(disc_order, full_map))

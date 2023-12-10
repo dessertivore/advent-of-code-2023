@@ -65,6 +65,19 @@ tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
 [[package]]
+name = "shapely"
+version = "1.8.5.post1"
+description = "Geometric objects, predicates, and operations"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+all = ["pytest", "pytest-cov", "numpy"]
+test = ["pytest", "pytest-cov"]
+vectorized = ["numpy"]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -75,7 +88,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "bfc261e0d56704d1e289d76150949cd9c6791a266219fe2c4c66372f66144968"
+content-hash = "a6709d33d4323b28d5e6cbc7c491a751e425fd00fcb10326505a73ae09ebb621"
 
 [metadata.files]
 colorama = []
@@ -84,4 +97,5 @@ iniconfig = []
 packaging = []
 pluggy = []
 pytest = []
+shapely = []
 tomli = []
