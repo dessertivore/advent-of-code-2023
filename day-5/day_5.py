@@ -28,11 +28,17 @@ input = parse_input_as_dict("day-5/input.txt")
 
 
 def day5_pt1(input_dict: dict) -> int:
+    """
+    Find lowest location number at which seed needs to be planted given mapping numbers provided.
+    """
     seed_dict: dict = {}
     for x in input_dict["seeds"]:
-        seed_dict[x] = [0] * 8
+        seed_dict[x] = [0] * 8  # create empty dict to track each seed's location
     input_dict.pop("seeds")
     for x in seed_dict:
+        """
+        Map each seed.
+        """
         seed_dict[x][0] = x
         map_no = 1
         for entry in input_dict.values():
@@ -47,7 +53,7 @@ def day5_pt1(input_dict: dict) -> int:
                     break
                 else:
                     seed_dict[x][map_no] = seed_dict[x][map_no - 1]
-                map_counter += 3
+                map_counter += 3  # goes up in 3s as each map entry is 3 numbers long
             map_no += 1
     min: int = math.inf
     for z in seed_dict.values():
