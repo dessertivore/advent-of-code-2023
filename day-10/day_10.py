@@ -37,6 +37,7 @@ def day_10_parse_nodes(file_name: str) -> tuple[Graph, tuple, list]:
     y_coord = -1  # will start at coordinates 0,0 once +1 at start
     pipe_map = None
     full_map = []
+    dict_map: dict = defaultdict()
     for line in input_as_list:
         line = line.strip("\n")
         y_coord += 1
@@ -45,6 +46,7 @@ def day_10_parse_nodes(file_name: str) -> tuple[Graph, tuple, list]:
             x_coord += 1
             coord: tuple = (x_coord, y_coord)
             full_map.append((coord, char))
+            dict_map[coord] = char
             if char == "S":
                 root = coord
             if char in converter_dict:
@@ -70,7 +72,7 @@ def day_10_parse_nodes(file_name: str) -> tuple[Graph, tuple, list]:
             root_edges.append(node)
     for root_edge in root_edges:
         pipe_map.add_edge((root, root_edge))
-    return pipe_map, root, full_map
+    return pipe_map, root, full_map, dict_map
 
 
 def day_10_p_1(graph_input: Graph, root):
@@ -111,38 +113,34 @@ def day_10_p_1(graph_input: Graph, root):
     return max_distance, discovery_order
 
 
-input1, input2, full_map = day_10_parse_nodes("day-10/input.txt")
-max, disc_order = day_10_p_1(input1, input2)
+# input1, input2, full_map = day_10_parse_nodes("day-10/input.txt")
+# max, disc_order = day_10_p_1(input1, input2)
 
 
-def find_area(input_list, full_map):
+def find_area(pipes_in_loop, full_map, dict_map):
+    print(full_map)
     """
     THIS DOES NOT WORK YET FOR INPUT DATA- NEEDS WORK
     """
     in_poly = []
-    for entry in full_map:
-        coord, char = entry
-        if char == ".":
-            how_many_to_the_right = 0
-            how_many_to_the_left = 0
-            for x in input_list:
-                if (
-                    x[0] == coord[0] and x[1] > coord[1]
-                ):  # check how many pipes to the right
-                    how_many_to_the_right += 1
-                if (
-                    x[0] == coord[0] and x[1] < coord[1]
-                ):  # check how many pipes to the left
-                    how_many_to_the_left += 1
+    pipes_to_right: dict = defaultdict(list)
 
+    for entry in full_map:  # go through each coordinate
+        how_many_to_the_right = 0
+        coord, char = entry
+        if coord not in pipes_in_loop:  # if coord is not a pipe in the loop
+            for x in pipes_in_loop:
+                if x[1] == coord[1] and x[0] > coord[0]:
+                    if dict_map[x] == "|":
+                        # check how many pipes to the right
+                        how_many_to_the_right += 1
+                        pipes_to_right[coord].append(x)
             if (
-                how_many_to_the_right % 2 != 0
-                and how_many_to_the_left % 2 == 0
-                and how_many_to_the_left > 0
-            ):  # ensure >1 pipe to the left, odd number of pipes to the left and even number to the right
+                how_many_to_the_right % 2
+            ):  # ensure >1 pipe to the right, odd number of pipes to the right
                 # in this scenario, the ground at that coord is enclosed
                 in_poly.append(coord)
     return len(in_poly)
 
 
-print(find_area(disc_order, full_map))
+# print(find_area(disc_order, full_map))
