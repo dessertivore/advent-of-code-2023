@@ -42,19 +42,21 @@ def day_11_part_1(star_map_file: str) -> (int, int):
             max_y = max(galaxy_dict[end][1], galaxy_dict[starting_galaxy][1])
             min_x = min(galaxy_dict[end][0], galaxy_dict[starting_galaxy][0])
             min_y = min(galaxy_dict[end][1], galaxy_dict[starting_galaxy][1])
+            # find range of x and y values in path
             for x in range(min_x, max_x):
                 if all_stops_x[x]:
-                    dist += 1
+                    dist += 1000000 - 1
             for y in range(
                 min_y, max_y
-            ):  # add extra distance for each double row/column
+            ):  # add extra distance for each empty row/column
                 if all_stops_y[y]:
-                    dist += 1
+                    dist += 1000000 - 1
+                    # change this to 1 for part 1, instead of 1000000 - 1
 
             shortest_path[(starting_galaxy, end)] = dist
             end += 1
         starting_galaxy += 1
-    return sum(shortest_path.values())
+    return galaxy_num, sum(shortest_path.values())
 
 
 print(day_11_part_1("day-11/input.txt"))
