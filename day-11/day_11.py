@@ -1,19 +1,26 @@
 from collections import defaultdict
 
 
-def day_11_part_1(star_map_file: str) -> (int, int):
+def day_11(star_map_file: str) -> (int, int):
+    """
+    Find shortest distance between galaxies in map, where galaxy is #.
+    """
     galaxy_map: list = open(star_map_file, "r").readlines()
     galaxy_map = [[_ for _ in line.strip("\n")] for line in galaxy_map]
-    line_count = 0
-    galaxy_num = 1
+    line_count: int = 0
+    galaxy_num: int = 1
     galaxy_dict: defaultdict = defaultdict()
-    all_stops_y = {}
-    for i in range(len(galaxy_map)):
+    all_stops_y: dict = {}
+    for i in range(len(galaxy_map)):  # set all_full_stops as true to start with
         all_stops_y[i] = True
     all_stops_x: defaultdict = defaultdict()
-    for line in galaxy_map:
+    for (
+        line
+    ) in (
+        galaxy_map
+    ):  # go through all characters in map and check for galaxies and empty lines/columns
         all_stops_x[line_count] = True
-        char_count = 0
+        char_count: int = 0
         for char in line:
             if char != ".":
                 all_stops_x[line_count] = False
@@ -28,13 +35,12 @@ def day_11_part_1(star_map_file: str) -> (int, int):
         # if all_stops:
         #     galaxy_map.insert(line_count, line)
         line_count += 1
-    shortest_path = defaultdict()
+    shortest_path: dict = {}
     for starting_galaxy in range(1, len(galaxy_dict.keys()) + 1):
-        end = starting_galaxy + 1
+        end: int = starting_galaxy + 1
         while end < len(galaxy_dict.keys()) + 1:
-            """
-            Find range of coordinates within path, add to dist if row/column is doubled
-            """
+            # Find range of coordinates within path, add to dist if row/column is empty
+
             dist = abs(galaxy_dict[end][1] - galaxy_dict[starting_galaxy][1]) + abs(
                 galaxy_dict[end][0] - galaxy_dict[starting_galaxy][0]
             )  # subtract coord1 from coord2 to find dist
@@ -59,4 +65,4 @@ def day_11_part_1(star_map_file: str) -> (int, int):
     return galaxy_num, sum(shortest_path.values())
 
 
-print(day_11_part_1("day-11/input.txt"))
+print(day_11("day-11/input.txt"))
