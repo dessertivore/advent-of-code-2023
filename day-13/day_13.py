@@ -1,58 +1,57 @@
-from collections import defaultdict
+# def parse_as_list(file_name: str) -> list:
+#     grid = []
+#     with open(file_name, "r") as file:
+#         lines: list[str] = file.read().split("\n\n")
+#     for line in lines:
+#         grid.append(line.split("\n"))
+#     return grid
 
 
-def parse_as_list(file_name: str) -> list:
-    grid = []
-    with open(file_name, "r") as file:
-        lines: list[str] = file.read().split("\n\n")
-    for line in lines:
-        grid.append(line.split("\n"))
-    return grid
+# def find_symmetry(grid: list) -> list:
+#     pivots: list = [[], []]
+#     # store data about each map's pivot point in a list. x pivots in [0], y pivots in [1]
+#     for lava_map in grid:
+#         y_pivot_idx: int = 1
+#         x_pivot_idx: int = 1
+
+#         pivot_found: bool = False
+#         while y_pivot_idx < len(lava_map[1]) and not pivot_found:
+#             for line in lava_map:
+#                 left = line[:y_pivot_idx]
+#                 right = line[y_pivot_idx:][::-1]  # reverse right side
+
+#                 if left[: len(right)] == right[: len(left)]:
+#                     pivot_found = True
+#                 else:
+#                     pivot_found = False
+#                     y_pivot_idx += 1
+#             if pivot_found:
+#                 pivots[1].append(y_pivot_idx)
+#                 break
+#         while x_pivot_idx < len(lava_map) and not pivot_found:
+#             upper = lava_map[:x_pivot_idx]
+#             lower = lava_map[x_pivot_idx:]
+#             for x in lower[: len(upper)][::-1]:
+#                 for y in upper[: len(lower)]:
+#                     if x == y:
+#                         pivot_found = True
+#                     else:
+#                         pivot_found - False
+#                         x_pivot_idx += 1
+#                         break
+#             if pivot_found:
+#                 pivots[0].append(x_pivot_idx)
 
 
-def find_symmetry(grid: list) -> list:
-    pivots: list = [[], []]
-    # store data about each map's pivot point in a list. x pivots in [0], y pivots in [1]
-    for lava_map in grid:
-        y_pivot_idx: int = 1
-        pivot_found: bool = False
-        while y_pivot_idx < len(lava_map[1]) and not pivot_found:
-            for line in lava_map:
-                left = line[:y_pivot_idx]
-                right = line[y_pivot_idx:][::-1]  # reverse right side
-
-                if left[: len(right)] == right[: len(left)]:
-                    pivot_found = True
-                else:
-                    pivot_found = False
-                    y_pivot_idx += 1
-            if pivot_found:
-                pivots[1].append(y_pivot_idx)
-                break
-        if not pivot_found:
-            for x_pivot_idx in range(1, len(lava_map)):
-                upper = lava_map[:x_pivot_idx]
-                lower = lava_map[x_pivot_idx:]
-                lower_reversed = lava_map[x_pivot_idx:]
-                lower_reversed.reverse()
-                print(upper[: len(lower)], lower_reversed[: len(upper)])
-                if lower_reversed[: len(upper)] == upper[: len(lower)]:
-                    pivot_found = True
-                    pivots[0].append(x_pivot_idx)
-                    break
-                else:
-                    pivot_found = False
-                    x_pivot_idx += 1
-                    continue
-    return pivots
+#     return pivots
 
 
-maps = parse_as_list("day-13/input.txt")
-symm = find_symmetry(maps)
-print(symm)
+# maps = parse_as_list("day-13/input.txt")
+# symm = find_symmetry(maps)
+# print(symm, len(symm[1]))
 
 
-def parse_input(file_name: str) -> dict:
+def parse_input(file_name: str) -> list:
     """
     Make dict of coordinates for each # within each map
     """
@@ -98,18 +97,18 @@ def find_rotation(lava_coords: list) -> list:
             for lava_coords in lava_map[1]:
                 difference = y_pivot_idx - lava_coords[1]
 
+                new_var = (lava_coords[0], int(y_pivot_idx + difference))
                 if (
-                    int(y_pivot_idx + difference) in range(0, max_coords[1])
-                    and (lava_coords[0], int(y_pivot_idx + difference))
-                    not in lava_map[1]
+                    int(y_pivot_idx + difference) in range(0, max_coords[1] + 1)
+                    and new_var not in lava_map[1]
                 ):
                     pivot_found = False
                     y_pivot_idx += 1
                     break
                 else:
                     pivot_found = True
-            if pivot_found:
-                pivots[1].append(y_pivot_idx)
+        if pivot_found:
+            pivots[1].append(y_pivot_idx)
 
         x_pivot_idx: float = 0.5
 
@@ -119,7 +118,7 @@ def find_rotation(lava_coords: list) -> list:
             for lava_coords in lava_map[1]:
                 difference = x_pivot_idx - lava_coords[0]
                 if (
-                    int(x_pivot_idx + difference) in range(0, max_coords[0])
+                    int(x_pivot_idx + difference) in range(0, max_coords[0] + 1)
                     and (int(x_pivot_idx + difference), lava_coords[1])
                     not in lava_map[1]
                 ):
@@ -130,7 +129,6 @@ def find_rotation(lava_coords: list) -> list:
                     pivot_found = True
             if pivot_found:
                 pivots[0].append(x_pivot_idx)
-
     return pivots
 
 
@@ -148,10 +146,10 @@ def sum_pivots(pivots: list) -> int:
     return total
 
 
-print(sum_pivots(symm))
-# maps = parse_input("day-13/input.txt")
+# print(sum_pivots(symm))
+# maps1 = parse_input("day-13/input.txt")
 # # print(maps[0])
-# pivots = find_rotation(maps)
+# pivots = find_rotation(maps1)
 # print(pivots)
 # print(len(pivots[0]) + len(pivots[1]), pivots)
 # print(sum_pivots(pivots))
