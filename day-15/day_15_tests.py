@@ -16,4 +16,4 @@ from day_15 import find_hash, sort_lenses
 
 assert find_hash("day-15/test_input.txt") == 1320
 
-sort_lenses("day-15/test_input.txt")
+assert sort_lenses("day-15/test_input.txt") == 145
