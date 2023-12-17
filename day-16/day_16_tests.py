@@ -1,6 +1,7 @@
-from day_16 import create_array, follow_map
+from day_16 import create_array, follow_map, part_2
 
 testing = create_array("day-16/test_input.txt")
-print(testing)
 
-print(follow_map(testing))
+assert (follow_map(testing)) == 46
+
+assert part_2(testing) == 51
