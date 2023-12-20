@@ -50,7 +50,7 @@ def parse_into_dicts(file_name: str) -> tuple:
     return workflows, ratings
 
 
-test = parse_into_dicts("day-19/input.txt")
+data = parse_into_dicts("day-19/input.txt")
 
 
 def go_through_ratings(workflows: dict, ratings: dict) -> int:
@@ -69,7 +69,7 @@ def go_through_ratings(workflows: dict, ratings: dict) -> int:
                 comparator_value = workflows[workflow_key][0][step_number][2]
                 outcome = workflows[workflow_key][0][step_number][3]
                 if operator == "<" and rating[rating_category] >= comparator_value:
-                    step_number += 1
+                    step_number += 1  # if it doesn't meet condition, go to next step
 
                 elif operator == ">" and rating[rating_category] <= comparator_value:
                     step_number += 1
@@ -98,8 +98,48 @@ def go_through_ratings(workflows: dict, ratings: dict) -> int:
                 else:
                     workflow_key = outcome
                     step_number = 0
-    print(all_nums)
     return sum(all_nums)
 
 
-print(go_through_ratings(test[0], test[1]))
+# print(go_through_ratings(data[0], data[1]))
+
+# print(data[0])
+
+
+def part_2(workflows: dict) -> int:
+    """
+    Not working yet. Need to find number of distinct combinations which would be accepted.
+    Currently just finding range of accepted numbers, but actually there are more accepted ranges
+    based on previous workflow steps I need to take into account.
+    """
+    category_ranges: dict = {"x": {set}, "m": {set}, "a": {set}, "s": {set}}
+    for workflow in workflows.values():
+        for steps in workflow[0]:
+            if steps[3] == "A":
+                category = steps[0]
+                operator = steps[1]
+                comparator = steps[2]
+                if operator == "<":
+                    for x in range(1, comparator):
+                        category_ranges[category].add(x)
+                elif operator == ">":
+                    for x in range(comparator + 1, 4001):
+                        category_ranges[category].add(x)
+                elif operator == "=":
+                    category_ranges[category].add(comparator)
+        if workflow[1] == "A":
+            category = workflow[0][-1][0]
+            operator = workflow[0][-1][1]
+            comparator = workflow[0][-1][2]
+            if operator == "<":
+                for x in range(1, comparator):
+                    category_ranges[category].add(x)
+            elif operator == ">":
+                for x in range(comparator + 1, 4001):
+                    category_ranges[category].add(x)
+            elif operator == "=":
+                category_ranges[category].add(comparator)
+    distinct_combos = 1
+    for category in category_ranges.values():
+        distinct_combos = distinct_combos * len(category)
+    return distinct_combos
