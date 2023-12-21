@@ -1,18 +1,5 @@
 from collections import defaultdict
-
-
-def create_array(file_name: str) -> dict:
-    input_as_list: list[str] = open(file_name, "r").readlines()
-    output = [line.strip("\n") for line in input_as_list]
-    grid: dict = {}
-    x = 0
-    for line in output:
-        y = 0
-        for char in line:
-            grid[(x, y)] = char
-            y += 1
-        x += 1
-    return grid
+from parse_input import create_array
 
 
 def follow_map(grid: dict, root=[(0, 1), (0, 0)]) -> int:
