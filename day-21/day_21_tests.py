@@ -10,4 +10,4 @@ assert len(reach_of_elf(test_map_graph, 1, start)) == 2
 
 assert len(reach_of_elf(test_map_graph, 6, start)) == 16
 
-print(len((part_2(test_map, 10, start))))
+print(len((part_2(test_map, 50, start))))
