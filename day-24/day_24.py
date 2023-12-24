@@ -2,6 +2,9 @@ from parse_input import parse_input_func_2
 
 
 def lineLineIntersection(A, B, C, D, minimum, maximum):
+    """
+    Finds intersect of 2 lines based on start and end coordinate. Found online.
+    """
     # Line AB represented as a1x + b1y = c1
     a1 = B[1] - A[1]
     b1 = A[0] - B[0]
@@ -28,7 +31,7 @@ def lineLineIntersection(A, B, C, D, minimum, maximum):
             or int(y) not in range(min(C[1], D[1]), max(C[1], D[1]))
             or int(x) not in range(minimum, maximum + 1)
             or int(y) not in range(minimum, maximum + 1)
-        ):  # check if coordinates of intersect are within within test plot
+        ):  # check if coordinates of intersect are within within test plot and are in future
             return False
         else:
             return (x, y)
@@ -40,7 +43,7 @@ def find_collision_course(
     """
     For a list of hail particles, their coordinates and velocities, check if they will intersect
     in a specific timeframe and a specific test area of specified coordinates.
-    Works for test input but not for real input.
+    Time is set to an arbitrary high number.
     """
     lines: dict = {}
     intersections: dict = {}
@@ -71,8 +74,10 @@ def find_collision_course(
                 intersection = lineLineIntersection(
                     initial, endpoint, initial_2, endpoint_2, minimum, maximum
                 )
-                if intersection:
-                    counter += 1
+                if (
+                    intersection
+                ):  # intersection coordinates themselves are currently not stored
+                    counter += 1  # lines which intersect are saved in a dict but also added to a counter
                     if initial not in intersections.keys():
                         intersections[initial] = {initial_2}
                     else:
