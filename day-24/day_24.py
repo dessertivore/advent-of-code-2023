@@ -22,10 +22,10 @@ def lineLineIntersection(A, B, C, D, minimum, maximum):
         x = (b2 * c1 - b1 * c2) / determinant
         y = (a1 * c2 - a2 * c1) / determinant
         if (
-            int(x) not in range(min(A[0], B[0]), max(A[0], B[0]))
+            min(A[0], B[0] <= int(x) not in range(min(A[0], B[0]), max(A[0], B[0])))
             or int(x) not in range(min(C[0], D[0]), max(C[0], D[0]))
             or int(y) not in range(min(A[1], B[1]), max(A[1], B[1]))
-            or int(y) not in range(min(C[1], D[1]), max(C[0], D[0]))
+            or int(y) not in range(min(C[1], D[1]), max(C[1], D[1]))
             or int(x) not in range(minimum, maximum + 1)
             or int(y) not in range(minimum, maximum + 1)
         ):  # check if coordinates of intersect are within within test plot
