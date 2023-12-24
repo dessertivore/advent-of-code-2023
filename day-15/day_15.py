@@ -45,7 +45,6 @@ def sort_lenses(input_text: str) -> int:
     with open(input_text, "r") as file:
         strings: list[str] = file.read().split(",")
     for individual_string in strings:
-        box_num_str = ""
         operator = None
         label = ""
         for char in individual_string:
