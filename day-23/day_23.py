@@ -103,16 +103,22 @@ def find_start(grid: Graph, start_node="S"):
 #     return ans, len(visited)
 
 
-def find_scenic_walk(grid, end_node, start_node=(0, 1), previous_node=None):
+def find_scenic_walk(
+    grid, end_node, start_node=(0, 1), visited=set(), previous_node=None
+):
     """
     This uses recursion and it worked but it recursed past my recursion limit with real input :(
-    Trying to reduce use of recursion by grouping together nodes with 1 neighbour.
+    Trying to reduce use of recursion by grouping together nodes with 1 neighbour,
+    but now it doesn't work at all.
     """
     if start_node == end_node:  # base case
         return 0
+
     distance = 0
     counter = 1
     current_node = start_node
+    visited.add(current_node)
+
     while current_node != end_node:
         if (
             len(grid.neighbours[current_node]) == 1
@@ -121,6 +127,7 @@ def find_scenic_walk(grid, end_node, start_node=(0, 1), previous_node=None):
             previous_node = current_node
             for neighbour in grid.neighbours[current_node]:
                 current_node = neighbour
+                visited.add(neighbour)
 
         elif (
             len(grid.neighbours[current_node]) == 2
@@ -131,6 +138,7 @@ def find_scenic_walk(grid, end_node, start_node=(0, 1), previous_node=None):
             for neighbour in grid.neighbours[current_node]:
                 if neighbour != previous_node:
                     next = neighbour
+                    visited.add(neighbour)
             previous_node = current_node
             current_node = next
 
@@ -140,13 +148,17 @@ def find_scenic_walk(grid, end_node, start_node=(0, 1), previous_node=None):
     if current_node == end_node:
         return counter
 
-    for neighbour in grid.neighbours[current_node]:
-        print((grid.neighbours[current_node]), previous_node, current_node)
-        if neighbour != previous_node:
-            distance = max(
-                distance,
-                counter + find_scenic_walk(grid, end_node, neighbour, current_node),
-            )
+    else:
+        for neighbour in grid.neighbours[current_node]:
+            if neighbour != previous_node and neighbour not in visited:
+                visited.add(neighbour)
+                distance = max(
+                    distance,
+                    counter
+                    + find_scenic_walk(
+                        grid, end_node, neighbour, visited, current_node
+                    ),
+                )
 
     return distance
 

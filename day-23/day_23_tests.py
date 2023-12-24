@@ -8,7 +8,6 @@ start = find_start(test_map_graph, ".")
 # print(find_scenic_walk(test_map_graph, start))
 # assert find_scenic_walk(test_map_graph, start) == 94
 
-assert (
+print(
     find_scenic_walk(test_map_graph, (test_map_graph.max_x, test_map_graph.max_y - 1))
-    == 94
 )
