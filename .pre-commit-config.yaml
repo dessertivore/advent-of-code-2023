@@ -1,0 +1,17 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+
+
+-   repo: https://github.com/LiquidFun/aoc_tiles
+    rev: '0.5.6'
+    hooks:
+    -   id: aoc-tiles
+        args:
+            - --auto-add-tiles-to-git=amend
+            - --overwrite-year=2023
+            # - --count-as-solved-when=on_leaderboard
+            - --what-to-show-on-right-side=time_and_rank
+        #     - --language-sorting=jl,kt,py,rs
+        #     - --exclude-patterns="2021/*/*.apl,2021/*/*.py,2021/*/*.cpp"
+

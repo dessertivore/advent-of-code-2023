@@ -1,2 +1,6 @@
 *.txt
 *.pyc
+.aoc_tiles/*
+!.aoc_tiles/tiles/
+__pycache__/*
+.aoc_tiles/tiles/2023/session.cookie
